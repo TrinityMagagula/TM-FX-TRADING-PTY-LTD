@@ -22,6 +22,7 @@
                     <li><a href="#strategy">Strategy</a></li>
                     <li><a href="#traders-group">Traders Group</a></li>
                     <li><a href="profile.html" id="user-name">My Profile</a></li>
+                    <li><a href="admin.html">Admin</a></li>
                     <li><a href="index.html" onclick="logout(event)">Logout</a></li>
                 </ul>
                 <div class="menu-toggle" onclick="toggleMenu()">☰</div>
@@ -96,8 +97,9 @@
             }
 
             function goToCompetitionPage() {
-                window.location.href = "joincompetition.html";
+                window.location.href = "competition.html";
             }
+
 
             function resetSignUp() {
                 const now = new Date();
@@ -113,22 +115,56 @@
             setInterval(resetSignUp, 60000); // Check every minute
         </script>
 
-        <script type="module">
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-            import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-            const firebaseConfig = {
-                apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
-                authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
-                projectId: "mt-trading-signup-and-log-in",
-                storageBucket: "mt-trading-signup-and-log-in.appspot.com",
-                messagingSenderId: "101302422584",
-                appId: "1:101302422584:web:07d472b05e81a6930beacd"
-            };
+    const firebaseConfig = {
+        apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+        authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+        projectId: "mt-trading-signup-and-log-in",
+        storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+        messagingSenderId: "101302422584",
+        appId: "1:101302422584:web:07d472b05e81a6930beacd",
+        databaseURL: "https://mt-trading-signup-and-log-in-default-rtdb.firebaseio.com/"
+    };
 
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-        </script>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // This is the function called when button is clicked
+    window.goToCompetitionPage = function () {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userId = user.uid;
+                const userRef = ref(db, `users/${userId}/loginID`);
+
+                try {
+                    const snapshot = await get(userRef);
+                    if (snapshot.exists() && snapshot.val()) {
+                        alert("✅ Access granted. You may continue.");
+                        window.location.href = "competition.html"; // Optional redirect
+                    } else {
+                        alert("❌ Access denied. PLEASE PAY JOINING FEE and SEND POP via WHATSAPP For Access");
+                    }
+                } catch (error) {
+                    console.error("Error checking loginID:", error);
+                    alert("❗ An error occurred while checking your access.");
+                }
+            } else {
+                alert("⚠️ You must be logged in to continue.");
+            }
+        });
+    };
+</script>
+
+
+
+                
+  
+  
 
     <main>
 
@@ -163,11 +199,22 @@
             </ol>
         
             <h3 style="margin-top: 2rem; text-align: center;">Join the Challenge</h3>
-            <p style="text-align: center;">Whether you're a beginner or a pro, this is your chance to show your trading skills and walk away with real money. Ready to compete?</p>
+            <p style="text-align: center;">Click the button below, Pay Joining Fee, Send Proof of Payment Via Whatsapp, Get access to COMPETITION and Start TRADING</p>
             
+
             <div style="text-align: center; margin-top: 2rem;">
-                <button class="elegant-button" onclick="goToCompetitionPage()">JOIN NOW</button>
+                    <a href="https://pay.yoco.com/r/mEVeLp" target="_blank" style="color: black; text-decoration: none;">
+                        <button class="elegant-button">
+                            <i class="fas fa-shopping-cart"></i> JOIN COMPETITION
+                        </button>
+                        
+                    </a>
             </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="elegant-button" onclick="goToCompetitionPage()">GO TO COMPETITION</button>
+            </div>
+
         </section>
         
 
@@ -210,22 +257,28 @@
             <div class="packages-container" style="margin-top: 1rem;">
                 
                 <div class="packages">
-                    <h3 style="margin-bottom: 1rem;">Weekly Subscription: <strong>$7 / R125</strong></h3>
-                    <a href="https://wa.me/p/8051304438303831/27682253532" target="_blank" style="color: black; text-decoration: none;">
-                        <i class="fas fa-shopping-cart"></i> Buy Now
+                    
+                    <a href="https://pay.yoco.com/r/4kMRd1" target="_blank" style="color: black; text-decoration: none;">
+                        
+                        <h3 style="margin-bottom: 1rem;">Weekly Subscription: <strong>$7 / R125</strong></h3>
+                        <i class="fas fa-shopping-cart"></i> 
+                        
+                        Buy Now
                     </a>
                 </div>
                 
                 <div class="packages">
-                    <h3 style="margin-bottom: 1rem;">Monthly Subscription: <strong>$20 / R350</strong><h3>
-                    <a href="https://wa.me/p/8552964324811776/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                    
+                    <a href="https://pay.yoco.com/r/70qNGJ" target="_blank" style="color: black; text-decoration: none;">
+                        <h3 style="margin-bottom: 1rem;">Monthly Subscription: <strong>$20 / R350</strong><h3></h3>
                         <i class="fas fa-shopping-cart"></i> Buy Now
                     </a> 
                 </div>
                 
                 <div class="packages">
-                    <h3 style="margin-bottom: 1rem;">Yearly Subscription: <strong>$200 / R3,600</strong></h3>
-                    <a href="https://wa.me/p/8476119322514929/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                    
+                    <a href="https://pay.yoco.com/r/2w8o1k" target="_blank" style="color: black; text-decoration: none;">
+                        <h3 style="margin-bottom: 1rem;">Yearly Subscription: <strong>$200 / R3,600</strong></h3>
                         <i class="fas fa-shopping-cart"></i> Buy Now
                     </a>
                 </div>
@@ -248,17 +301,19 @@
                 <div class="packages-container">
                     
                     <div class="packages">
-                        <h3>Weekly Signals: <strong>$10 / R170</strong> </h3>
-                        <p style="margin-bottom: 1rem;"> Perfect for short-term traders looking for consistent, high-frequency insights.</p>
-                        <a href="https://wa.me/p/8667119913323392/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                        
+                        <a href="https://pay.yoco.com/r/2DVJyw" target="_blank" style="color: black; text-decoration: none;">
+                            <h3>Weekly Signals: <strong>$10 / R170</strong> </h3>
+                            <p style="margin-bottom: 1rem;"> Perfect for short-term traders looking for consistent, high-frequency insights.</p>
                             <i class="fas fa-shopping-cart"></i> Buy Now
                         </a>
                     </div>
                     
                     <div class="packages">
-                        <h3>Monthly Signals: <strong>$30 / R500</strong></h3>
-                        <p style="margin-bottom: 1rem;">Ideal for dedicated traders who want continuous access to high-quality signals for strategic planning.</p>
-                        <a href="https://wa.me/p/9376938542333741/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                        
+                        <a href="https://pay.yoco.com/r/meDMr0" target="_blank" style="color: black; text-decoration: none;">
+                            <h3>Monthly Signals: <strong>$30 / R500</strong></h3>
+                            <p style="margin-bottom: 1rem;">Ideal for dedicated traders who want continuous access to high-quality signals for strategic planning.</p>
                             <i class="fas fa-shopping-cart"></i> Buy Now
                         </a>
                     </div>
@@ -272,16 +327,19 @@
                 
                 <div class="packages-container">
                     <div class="packages">
-                        <h3>Weekly Signals: <span>$8 / R150</span> </h3>
-                        <p style="margin-bottom: 1rem;">Ideal for focused trading on specific indices, delivered with accuracy and timing.</p>
-                        <a href="https://wa.me/p/8841370619239323/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                        
+                        <a href="https://pay.yoco.com/r/2QZqVw" target="_blank" style="color: black; text-decoration: none;">
+                            <h3>Weekly Signals: <span>$8 / R150</span> </h3>
+                            <p style="margin-bottom: 1rem;">Ideal for focused trading on specific indices, delivered with accuracy and timing.</p>
                             <i class="fas fa-shopping-cart"></i> Buy Now
                         </a>
                     </div>
                     <div class="packages">
-                        <h3>Monthly Signals: <span>$25 / R450</span> </h3>
-                        <p style="margin-bottom: 1rem;">A comprehensive plan for traders looking to capitalize on trends and market movements over a longer period.</p>
-                        <a href="https://wa.me/p/9918071831542519/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                        
+                        <a href="https://pay.yoco.com/r/2BNDML" target="_blank" style="color: black; text-decoration: none;">
+                            
+                            <h3>Monthly Signals: <span>$25 / R450</span> </h3>
+                             <p style="margin-bottom: 1rem;">A comprehensive plan for traders looking to capitalize on trends and market movements over a longer period.</p>
                             <i class="fas fa-shopping-cart"></i> Buy Now
                         </a>
                     </div>
@@ -321,8 +379,9 @@
 
             <div class="packages-container">
                 <div class="packages">
-                    <h3 style="margin-bottom: 1rem;">Price: <strong>$420 / R7,500</strong></h3>
-                    <a href="https://wa.me/p/8469698126412892/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                    
+                    <a href="https://pay.yoco.com/r/7vaDGg" target="_blank" style="color: black; text-decoration: none;">
+                        <h3 style="margin-bottom: 1rem;">Price: <strong>$420 / R7,500</strong></h3>
                         <i class="fas fa-shopping-cart"></i> Buy Now
                     </a>
                 </div>
