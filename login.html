@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM FX TRADING (pty) Ltd - Login</title>
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+    
+    
+    <!-- Google reCAPTCHA v3 -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6Le0i3AqAAAAAAMLevkALu7lT4RQLPUYYOOZq279"></script>
+    
+    <script>
+        //Toggle nav button
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+            authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+            projectId: "mt-trading-signup-and-log-in",
+            storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+            messagingSenderId: "101302422584",
+            appId: "1:101302422584:web:07d472b05e81a6930beacd"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle login form submission
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('6Le0i3AqAAAAAAMLevkALu7lT4RQLPUYYOOZq279', {action: 'login'}).then(function(token) {
+                        // Add the token to the form
+                        const tokenInput = document.createElement('input');
+                        tokenInput.setAttribute('type', 'hidden');
+                        tokenInput.setAttribute('name', 'g-recaptcha-response');
+                        tokenInput.setAttribute('value', token);
+                        document.getElementById('login-form').appendChild(tokenInput);
+
+                        const email = document.getElementById('login-email').value.trim();
+                        const password = document.getElementById('login-password').value;
+
+                        signInWithEmailAndPassword(auth, email, password)
+                            .then((userCredential) => {
+                                const user = userCredential.user;
+                                if (!user.emailVerified) {
+                                    alert('Please verify your email address.');
+                                    return;
+                                }
+                                alert('You have successfully logged in');
+                                window.location.href = "membership.html";
+                            })
+                            .catch((error) => {
+                                const errorCode = error.code;
+                                let errorMessage;
+
+                                switch (errorCode) {
+                                    case 'auth/invalid-email':
+                                        errorMessage = 'Please enter a valid email address.';
+                                        break;
+                                    case 'auth/user-disabled':
+                                        errorMessage = 'This account has been disabled.';
+                                        break;
+                                    case 'auth/user-not-found':
+                                        errorMessage = 'No account found with this email.';
+                                        break;
+                                    case 'auth/wrong-password':
+                                        errorMessage = 'Incorrect password. Please try again.';
+                                        break;
+                                    case 'auth/email-already-in-use':
+                                        errorMessage = 'This email is already in use.';
+                                        break;
+                                    case 'auth/weak-password':
+                                        errorMessage = 'Password is too weak. Use a stronger password.';
+                                        break;
+                                    case 'auth/invalid-credential':
+                                        errorMessage = 'Invalid credentials. Please check your configuration or try again later.';
+                                        break;
+                                    default:
+                                        errorMessage = error.message;
+                                }
+
+                                alert(errorMessage);
+                            });
+                    });
+                });
+            });
+
+            document.getElementById('sign-up-button').onclick = function() {
+                window.location.href = 'signup.html';
+            };
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+            <nav>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+                <ul id="nav-links">
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="login.html" id="login-button">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="login-section">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" name="login-email" required>
+
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="login-password" required>
+
+            <div id="login-buttons">
+                <button type="button" id="sign-up-button">Sign Up</button>
+                <button type="submit">Log in</button>
+            </div>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+    </footer>
+
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #4b4b4b;
+            color: #333;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .small-text {
+            font-size: 0.5em;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            position: relative;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            text-align: right;
+            margin-right: 1rem;
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            nav ul li {
+                display: block;
+                margin: 10px 0;
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+        }
+
+        /* Login Section Styling */
+        #login-section {
+            margin: 100px auto;
+            margin-bottom: 100px;
+            max-width: 400px;
+            background-color: white;
+            padding: 30px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        #login-section h2 {
+            color: black;
+            font-weight: lighter;
+            margin-bottom: 20px;
+        }
+
+        /* Login Form Styling */
+        #login-form {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #login-form label {
+            text-align: right;
+            color: black;
+        }
+
+        #login-form input[type="email"],
+        #login-form input[type="password"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Buttons Styling */
+        #login-buttons {
+            grid-column: span 2;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #login-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #login-buttons button[type="submit"] {
+            background-color: #313131;
+            color: white;
+        }
+
+        #login-buttons button#sign-up-button {
+            background-color: rgb(83, 84, 84);
+            color: white;
+        }
+        
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            bottom: 0;
+            width: 100%;
+            position: -ms-page;
+        }
+    </style>
+</body>
+</html>

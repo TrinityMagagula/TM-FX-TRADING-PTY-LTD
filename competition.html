@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competition Page - TM FX TRADING (pty) Ltd</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="#leaderboard">Leaderboard</a></li>
+                    <li><a href="profile.html" id="user-name">My Profile</a></li>
+                    <li><a href="index.html" onclick="logout(event)">Logout</a></li>
+                </ul>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </nav>
+        </div>
+        <div class="ticker-strip" style="margin-top: 3rem;">
+            <iframe
+                src="https://www.tradingview-widget.com/embed-widget/ticker-tape/?locale=en#%7B%22symbols%22%3A%5B%7B%22proName%22%3A%22FOREXCOM%3ASPXUSD%22%2C%22title%22%3A%22S%26P%20500%22%7D%2C%7B%22proName%22%3A%22FOREXCOM%3ANSXUSD%22%2C%22title%22%3A%22US%20100%22%7D%2C%7B%22proName%22%3A%22FX_IDC%3AEURUSD%22%2C%22title%22%3A%22EUR%2FUSD%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3ABTCUSD%22%2C%22title%22%3A%22Bitcoin%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3AETHUSD%22%2C%22title%22%3A%22Ethereum%22%7D%5D%2C%22showSymbolLogo%22%3Atrue%2C%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22displayMode%22%3A%22adaptive%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A44%7D"
+                width="100%" height="50" frameborder="0" allowtransparency="true" scrolling="no">
+            </iframe>
+        </div>
+    </header>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+        
+        function logout(event) {
+            event.preventDefault();
+            signOut(auth).then(() => {
+                alert("You have been logged out.");
+                window.location.href = "index.html"; // Redirect to home page after alert
+            }).catch((error) => {
+                console.error("Logout error:", error);
+            });
+        }
+
+        let inactivityTime = function () {
+            let timer;
+            window.onload = resetTimer;
+            window.onmousemove = resetTimer;
+            window.onkeypress = resetTimer;
+
+            function logoutUser() {
+                // Call logout directly instead of showing an alert here
+                signOut(auth).then(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "index.html"; // Redirect after alert
+                }).catch((error) => {
+                    console.error("Logout error:", error);
+                });
+            }
+
+            function resetTimer() {
+                clearTimeout(timer);
+                timer = setTimeout(logoutUser, 600000); // Logout after 10 minutes of inactivity
+            }
+        };
+
+        inactivityTime();
+
+        function logout() {
+            alert("You have been logged out.");
+        }
+
+    </script>
+
+    <main>
+        <section id="Details">
+            <h2 id="welcome-message">Welcome to the Competition</h2>
+            <div style="margin-top: 1rem;" id="user-details">
+                <!-- User details will be populated here -->
+
+            </div>
+            
+
+            <div style="margin-top: 2rem;">
+                <p><strong>Requirements:</strong></p>
+                <li>Go to "My Profile" and update your profile details correctly</li>
+                <li>Forward your Name and Login ID to:</li>
+                <a href="https://wa.me/27682253532" target="_blank"
+                    style="text-align: center; color: white; background-color: #3a3d3a; padding: 10px 20px; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center;">
+                    <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> TM FX Competition
+                </a>
+                <li>Join Competition Whatsapp group for Announcements and engagement</li>
+                <a href="https://chat.whatsapp.com/Hna9qvbY0jmFJ0fzwrqxUj" target="_blank" style="color: white; background-color: #3a3d3a; padding: 10px 20px; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center;">
+                    <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Competition Group Chat
+                </a>
+
+                <p style="margin-top: 1rem;"> <strong>Please note:</strong> Failure to complete above requirements will
+                    lead to account deletion and disqualification</p>
+            </div>
+        </section>
+        <section></section>
+
+        <section id="leaderboard1">
+            <h2>Leaderboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Picture</th>
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>Status</th>
+                        <th>Equity (ZAR)</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard">
+                    <!-- Dynamic rows will be inserted here -->
+                </tbody>
+            </table>
+            <ul class="pagination" id="pagination"></ul>
+
+            <script type="module">
+                // Import Firebase functions
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+                import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+                import { getStorage, ref as storageRef, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
+
+                // Firebase configuration
+                const firebaseConfig = {
+                apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+                authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+                databaseURL: "https://mt-trading-signup-and-log-in-default-rtdb.firebaseio.com",
+                projectId: "mt-trading-signup-and-log-in",
+                storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+                messagingSenderId: "101302422584",
+                appId: "1:101302422584:web:07d472b05e81a6930beacd"
+                };
+
+                // Initialize Firebase
+                const app = initializeApp(firebaseConfig);
+                const db = getDatabase(app);
+                const storage = getStorage(app);
+
+                // DOM elements
+                const leaderboardTable = document.getElementById('leaderboard');
+                const pagination = document.getElementById('pagination');
+
+                let currentPage = 1;
+                const rowsPerPage = 10;
+                let usersList = [];
+
+                // Fetch data from Firebase
+                function loadLeaderboard() {
+                    const dbRef = ref(db);
+                    get(child(dbRef, 'users')).then(snapshot => {
+                        if (snapshot.exists()) {
+                            const users = snapshot.val();
+                            const filteredUsers = Object.values(users).filter(user => user.loginID).sort((a, b) => b.equity - a.equity);
+
+                            leaderboardTable.innerHTML = '';
+                            filteredUsers.forEach(async (user, index) => {
+                                const row = document.createElement('tr');
+                                
+                                // Create table cells for each column
+                                const rankCell = `<td>${index + 1 }</td>`;
+                                const nameCell = `<td>${user.name || 'N/A'}</td>`;
+                                const cityCell = `<td>${user.province || 'N/A'}</td>`;
+                                const statusCell = `<td>${user.status || 'N/A'}</td>`;
+                                const equityCell = `<td>${user.equity || 'N/A'}</td>`;
+
+                                // Fetch profile picture
+                                let profilePictureCell = `<td><img src="https://firebasestorage.googleapis.com/v0/b/mt-trading-signup-and-log-in.appspot.com/o/tm%20fx.png?alt=media&token=4e6aded3-2796-4487-82d4-987b75ca18c1" class="profile-pic"></td>`; // Default image
+
+                                if (user && user.uid) { // Ensure user and user.uid exist
+                                    try {
+                                        // Create a reference to the user's profile picture in storage
+                                        const profilePictureRef = Ref(storage, `profile_pictures/${user.uid}`);
+
+                                        // Fetch the download URL for the profile picture
+                                        const profilePictureURL = await getDownloadURL(profilePictureRef);
+
+                                        // Update the profile picture cell with the fetched image URL
+                                        profilePictureCell = `<td><img src="${profilePictureURL}" alt="Profile Picture" class="profile-pic"></td>`;
+                                    } catch (error) {
+                                        console.error(`Error loading profile picture for user ${user.uid}:`, error);
+
+                                        // Optional: Customize the default image or behavior in case of an error
+                                        profilePictureCell = `<td><img src="https://firebasestorage.googleapis.com/v0/b/mt-trading-signup-and-log-in.appspot.com/o/tm%20fx.png?alt=media&token=4e6aded3-2796-4487-82d4-987b75ca18c1" class="profile-pic"></td>`;
+                                    }
+                                } else {
+                                    console.error("User or user UID is undefined. Cannot fetch profile picture.");
+                                }
+
+
+
+                                // Append row to the leaderboard
+                                row.innerHTML = rankCell + profilePictureCell + nameCell + cityCell + statusCell + equityCell;
+                                leaderboardTable.appendChild(row);
+                            });
+                        } else {
+                            leaderboardTable.innerHTML = '<tr><td colspan="6">No data available</td></tr>';
+                        }
+                    }).catch(error => {
+                        console.error("Error fetching data:", error);
+                        leaderboardTable.innerHTML = '<tr><td colspan="6">Error loading data</td></tr>';
+                    });
+                }
+
+
+                // Render table
+                function renderTable(page) {
+                    const startIndex = (page - 1) * rowsPerPage;
+                    const endIndex = startIndex + rowsPerPage;
+                    const usersToDisplay = usersList.slice(startIndex, endIndex);
+
+                    leaderboardTable.innerHTML = '';
+                    usersToDisplay.forEach((user, index) => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>${startIndex + index + 1}</td>
+                        <td>${user.name || 'N/A'}</td>
+                        <td>${user.province || 'N/A'}</td>
+                        <td>${user.status || 'N/A'}</td>
+                        <td>${user.equity || 0}</td>
+                        `;
+                        leaderboardTable.appendChild(row);
+                    });
+                }
+
+                // Render pagination
+                function renderPagination(totalUsers) {
+                    pagination.innerHTML = '';
+                    const totalPages = Math.ceil(totalUsers / rowsPerPage);
+
+                    if (totalPages <= 1) return; // No pagination if only 1 page
+
+                    for (let i = 1; i <= totalPages; i++) {
+                        const li = document.createElement('li');
+                        const button = document.createElement('button');
+                        button.textContent = i;
+                        button.classList.toggle('active', i === currentPage);
+                        button.disabled = i === currentPage;
+                        button.addEventListener('click', () => {
+                        currentPage = i;
+                        renderTable(currentPage);
+                        renderPagination(usersList.length);
+                        });
+                        li.appendChild(button);
+                        pagination.appendChild(li);
+                    }
+                }
+
+
+                // Load leaderboard on page load
+                loadLeaderboard();
+            </script>
+        </section>
+
+        <section></section>
+
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, onValue, get, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    
+        // Firebase configuration and initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+            authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+            projectId: "mt-trading-signup-and-log-in",
+            storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+            messagingSenderId: "101302422584",
+            appId: "1:101302422584:web:07d472b05e81a6930beacd"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+    
+        // Function to assign a login ID to a user if they don't already have one
+        async function assignLoginID(userId) {
+            const loginIDRef = ref(db, 'loginIDs');
+            const snapshot = await get(loginIDRef);
+    
+            let assignedLoginID = null;
+    
+            snapshot.forEach((childSnapshot) => {
+                const loginIDData = childSnapshot.val();
+                if (!loginIDData.assigned) {
+                    assignedLoginID = loginIDData.loginID;
+    
+                    // Update loginID as assigned in the database
+                    update(ref(db, `loginIDs/${childSnapshot.key}`), { assigned: true });
+                    
+                    // Update user's data to store the assigned login ID
+                    update(ref(db, `users/${userId}`), { loginID: assignedLoginID });
+                    return true;  // Breaks out of the loop
+                }
+            });
+    
+            return assignedLoginID;
+        }
+    
+        // Monitor user authentication status
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userId = user.uid;
+                const userRef = ref(db, 'users/' + userId);
+    
+                // Fetch user data and assign login ID if missing
+                onValue(userRef, async (snapshot) => {
+                    let userData = snapshot.val();
+    
+                    // Assign login ID if not already assigned
+                    if (!userData.loginID) {
+                        userData.loginID = await assignLoginID(userId);
+                    }
+    
+                    // Update the welcome message and display user details on the page
+                    document.getElementById('welcome-message').textContent = `Welcome to Competition, ${userData.name}`;
+    
+                    document.getElementById('user-details').innerHTML = `
+                        <p><strong>Name:</strong> ${userData.name}</p>
+                        <p><strong>Email:</strong> ${userData.email}</p>
+                        <p><strong>Account Type:</strong> ${userData.accountType || 'Standard'}</p>
+                        <p><strong>Login ID:</strong> ${userData.loginID || 'Pending assignment'}</p>
+                        <p><strong>Password: </strong>@TMFXTrading4 </p>
+                        <p><strong>Platform:</strong> MT5</p>
+                        <p><strong>Broker:</strong> Exness Technologies Ltd</p>
+                        <p><strong>Server:</strong> Exness-MT5Trial9</p>
+                        <p><strong>Leverage:</strong> 1:1000</p>
+                    `;
+                });
+            } else {
+                // Redirect to homepage if not authenticated
+                window.location.href = 'index.html';
+            }
+        });
+    
+
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #a6a6a6;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+        }
+
+        .small-text {
+            font-size: 0.5em;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav li {
+            margin-top: 0.75rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .nav-links.active {
+            display: block;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        section {
+            padding: 2rem 0;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 10px;
+                background: #333;
+                padding: 1rem;
+                width: 200px;
+                border-radius: 0px;
+            }
+
+            .menu-toggle {
+                display: block;
+                color: white;
+            }
+
+            .logo {
+                text-align: center;
+            }
+        }
+
+        .ticker-strip {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        #Details {
+            padding: 40px;
+            text-align: left;
+            background-color: #e4e4e4;
+        }
+
+        #leaderboard1 {
+            padding: 40px;
+            text-align: left;
+            background-color: #e4e4e4;
+        }
+
+        /* Leaderboard Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    @media (max-width: 768px) {
+      th, td {
+        font-size: 0.7rem; /* Reduce font size on smaller screens */
+        padding: 3px; /* Reduce padding to save space */
+        }
+
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination li button {
+            border: none;
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .pagination li button.active {
+            background-color: #0056b3;
+        }
+
+        .pagination li button:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination li button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+        .profile-pic {
+            width: 30px; /* Smaller size for medium screens */
+            height: 30px;
+            border-radius: 40%;
+            object-fit: cover;
+            }
+        }
+    </style>
+</body>
+
+</html>

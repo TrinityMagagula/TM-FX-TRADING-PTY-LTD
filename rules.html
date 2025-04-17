@@ -1,0 +1,15 @@
+{
+    "rules": {
+      "users": {
+        "$uid": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      },
+      "loginIDs": {
+        ".read": "auth != null",   // Allow all authenticated users to read
+        ".write": "auth != null"
+      }
+    }
+  }
+  

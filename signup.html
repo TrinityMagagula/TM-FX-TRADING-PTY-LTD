@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM FX TRADING (pty) Ltd - Sign Up</title>
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+    
+    
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+            authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+            databaseURL: "https://mt-trading-signup-and-log-in-default-rtdb.firebaseio.com",
+            projectId: "mt-trading-signup-and-log-in",
+            storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+            messagingSenderId: "101302422584",
+            appId: "1:101302422584:web:07d472b05e81a6930beacd"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const database = getDatabase();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('signup-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value.trim();
+                const surname = document.getElementById('surname').value.trim();
+                const birthdate = new Date(document.getElementById('birthdate').value);
+                const phone = document.getElementById('phone').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                const age = new Date().getFullYear() - birthdate.getFullYear();
+                const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                const isValidPhone = /^\d{10}$/.test(phone);
+                const passwordRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+                if (age < 18) {
+                    document.getElementById('birthdate-error').innerText = "You must be over the age of 18.";
+                    return;
+                } else {
+                    document.getElementById('birthdate-error').innerText = "";
+                }
+
+                if (!isValidEmail) {
+                    document.getElementById('email-error').innerText = "Please enter a valid email address.";
+                    return;
+                } else {
+                    document.getElementById('email-error').innerText = "";
+                }
+
+                if (!isValidPhone) {
+                    document.getElementById('phone-error').innerText = "Please enter a valid 10-digit phone number.";
+                    return;
+                } else {
+                    document.getElementById('phone-error').innerText = "";
+                }
+
+                if (password !== confirmPassword) {
+                    document.getElementById('password-error').innerText = "Passwords do not match.";
+                    return;
+                } else {
+                    document.getElementById('password-error').innerText = "";
+                }
+
+                if (!passwordRequirements.test(password)) {
+                    document.getElementById('password-error').innerText = "Password must include at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 symbol.";
+                    return;
+                } else {
+                    document.getElementById('password-error').innerText = "";
+                }
+
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        const userData = {
+                            name: name,
+                            surname: surname,
+                            birthdate: birthdate.toISOString().split('T')[0],
+                            phone: phone,
+                            email: email,
+                            status: "Active",
+                            equity: 1000,
+                            last_login: Date.now()
+                        };
+                        set(ref(database, 'users/' + user.uid), userData)
+                            .then(() => {
+                                sendEmailVerification(user).then(() => {
+                                    alert('Successfully signed up, verify email address then proceed to Log in');
+                                    window.location.href = "login.html";
+                                });
+                            });
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                    });
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+            <nav>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+                <ul id="nav-links">
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="login.html" id="login-button">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="signup-section">
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+            <small class="error" id="name-error"></small>
+
+            <label for="surname">Surname</label>
+            <input type="text" id="surname" name="surname" required>
+            <small class="error" id="surname-error"></small>
+
+            <label for="birthdate">Birth Date</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+            <small class="error" id="birthdate-error"></small>
+
+            <label for="phone">Cellphone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+            <small class="error" id="phone-error"></small>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            <small class="error" id="email-error"></small>
+
+            <label for="password">Create Password</label>
+            <input type="password" id="password" name="password" required>
+            <small class="error" id="password-error"></small>
+
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+            <small class="error" id="confirm-password-error"></small>
+
+            <button type="submit">Register</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+    </footer>
+
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #4b4b4b;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .small-text {
+            font-size: 0.5em;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            position: relative;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            text-align: right;
+            margin-right: 1rem;
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+            nav ul li {
+                display: block;
+                margin: 10px 0;
+            }
+            nav ul.show {
+                display: flex;
+            }
+        }
+
+        /* Signup Section */
+        #signup-section {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            margin: 100px auto 0;
+            margin-bottom: 100px;
+            text-align: center;
+        }
+
+        #signup-section h2 {
+            color: #333;
+        }
+
+        form label {
+            margin-top: 15px;
+            display: block;
+            color: #333;
+            text-align: left;
+        }
+
+        form input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #313131;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 4px;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            bottom: 0;
+            width: 100%;
+            position: -ms-page;
+        }
+    </style>
+</body>
+</html>

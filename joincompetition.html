@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Competition - TM FX TRADING</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #a6a6a6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .banking-container {
+            background-color: #e4e4e4;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .bank-details {
+            background-color: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .instructions {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .button-container {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .whatsapp-button, .competition-button {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .competition-button {
+            background-color: #007bff;
+        }
+
+        .whatsapp-button:hover {
+            background-color: #1ebe5d;
+        }
+
+        .competition-button:hover {
+            background-color: #0056b3;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .banking-container {
+                padding: 1rem;
+            }
+            .bank-details, .instructions {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banking-container">
+        <h2>Join the Monthly Competition</h2>
+        <div class="bank-details">
+            <strong>Account Holder:</strong> TM FX TRADING (PTY) LTD<br>
+            <strong>ID/Reg Number:</strong> 2024/684842/07<br>
+            <strong>Account Type:</strong> Current<br>
+            <strong>Account Number:</strong> 0000010247233682<br>
+            <strong>Branch:</strong> Rondebosch<br>
+            <strong>Branch Code:</strong> 051001<br>
+            <strong>SWIFT Code:</strong> SBZA ZA JJ
+        </div>
+
+        <div class="instructions">
+            <p>Please use your <strong>Name and Surname</strong> as the payment reference when making the EFT payment of <strong>R50</strong>.</p>
+            <p>After completing the payment, send your <strong>Proof of Payment</strong> to our WhatsApp number using the button below.</p>
+            <p><strong>Note:</strong> Failure to follow these instructions may result in your membership being suspended.</p>
+        </div>
+
+        <div class="button-container">
+            <a href="#" class="whatsapp-button">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="20" height="20">
+                Send Proof of Payment
+            </a>
+            <a href="competition.html" class="competition-button">Go to Competition Page</a>
+        </div>
+    </div>
+</body>
+</html>

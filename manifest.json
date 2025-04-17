@@ -1,0 +1,11 @@
+{
+  "name": "MT Trading",
+  "short_name": "MTTrading",
+  "description": "Your go-to app for forex trading mentorship, signals, and more.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#a6a6a6",
+  "theme_color": "#333"
+}
+
+  

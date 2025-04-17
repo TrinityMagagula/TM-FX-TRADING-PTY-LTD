@@ -1,0 +1,481 @@
+{
+  "loginIDs": {
+    "id1": {
+      "assigned": true,
+      "loginID": "180893790"
+    },
+    "id10": {
+      "assigned": true,
+      "loginID": "180893624"
+    },
+    "id100": {
+      "assigned": true,
+      "loginID": "180889477"
+    },
+    "id11": {
+      "assigned": true,
+      "loginID": "180893623"
+    },
+    "id12": {
+      "assigned": false,
+      "loginID": "180893622"
+    },
+    "id13": {
+      "assigned": false,
+      "loginID": "180893621"
+    },
+    "id14": {
+      "assigned": false,
+      "loginID": "180893559"
+    },
+    "id15": {
+      "assigned": false,
+      "loginID": "180892512"
+    },
+    "id16": {
+      "assigned": false,
+      "loginID": "180893511"
+    },
+    "id17": {
+      "assigned": false,
+      "loginID": "180893510"
+    },
+    "id18": {
+      "assigned": false,
+      "loginID": "180893509"
+    },
+    "id19": {
+      "assigned": false,
+      "loginID": "180893508"
+    },
+    "id2": {
+      "assigned": false,
+      "loginID": "180893789"
+    },
+    "id20": {
+      "assigned": false,
+      "loginID": "180893471"
+    },
+    "id21": {
+      "assigned": false,
+      "loginID": "180893469"
+    },
+    "id22": {
+      "assigned": false,
+      "loginID": "180893468"
+    },
+    "id23": {
+      "assigned": false,
+      "loginID": "180893467"
+    },
+    "id24": {
+      "assigned": false,
+      "loginID": "180893466"
+    },
+    "id25": {
+      "assigned": false,
+      "loginID": "180893391"
+    },
+    "id26": {
+      "assigned": false,
+      "loginID": "180893390"
+    },
+    "id27": {
+      "assigned": false,
+      "loginID": "180893388"
+    },
+    "id28": {
+      "assigned": false,
+      "loginID": "180893387"
+    },
+    "id29": {
+      "assigned": false,
+      "loginID": "180893386"
+    },
+    "id3": {
+      "assigned": false,
+      "loginID": "180893777"
+    },
+    "id30": {
+      "assigned": false,
+      "loginID": "180893219"
+    },
+    "id31": {
+      "assigned": false,
+      "loginID": "180893218"
+    },
+    "id32": {
+      "assigned": false,
+      "loginID": "180893217"
+    },
+    "id33": {
+      "assigned": false,
+      "loginID": "180893216"
+    },
+    "id34": {
+      "assigned": false,
+      "loginID": "180893215"
+    },
+    "id35": {
+      "assigned": false,
+      "loginID": "180893148"
+    },
+    "id36": {
+      "assigned": false,
+      "loginID": "180893147"
+    },
+    "id37": {
+      "assigned": false,
+      "loginID": "180893146"
+    },
+    "id38": {
+      "assigned": false,
+      "loginID": "180893145"
+    },
+    "id39": {
+      "assigned": false,
+      "loginID": "180893144"
+    },
+    "id4": {
+      "assigned": false,
+      "loginID": "180893754"
+    },
+    "id40": {
+      "assigned": false,
+      "loginID": "180893048"
+    },
+    "id41": {
+      "assigned": false,
+      "loginID": "180893047"
+    },
+    "id42": {
+      "assigned": false,
+      "loginID": "180893046"
+    },
+    "id43": {
+      "assigned": false,
+      "loginID": "180893045"
+    },
+    "id44": {
+      "assigned": false,
+      "loginID": "180893044"
+    },
+    "id45": {
+      "assigned": false,
+      "loginID": "180893011"
+    },
+    "id46": {
+      "assigned": false,
+      "loginID": "180893010"
+    },
+    "id47": {
+      "assigned": false,
+      "loginID": "180893009"
+    },
+    "id48": {
+      "assigned": false,
+      "loginID": "180893008"
+    },
+    "id49": {
+      "assigned": false,
+      "loginID": "180893007"
+    },
+    "id5": {
+      "assigned": false,
+      "loginID": "180893753"
+    },
+    "id50": {
+      "assigned": false,
+      "loginID": "180892930"
+    },
+    "id51": {
+      "assigned": false,
+      "loginID": "180892929"
+    },
+    "id52": {
+      "assigned": false,
+      "loginID": "180892928"
+    },
+    "id53": {
+      "assigned": false,
+      "loginID": "180892927"
+    },
+    "id54": {
+      "assigned": false,
+      "loginID": "180892892"
+    },
+    "id55": {
+      "assigned": false,
+      "loginID": "180892891"
+    },
+    "id56": {
+      "assigned": false,
+      "loginID": "180892890"
+    },
+    "id57": {
+      "assigned": false,
+      "loginID": "180892889"
+    },
+    "id58": {
+      "assigned": false,
+      "loginID": "180892888"
+    },
+    "id59": {
+      "assigned": false,
+      "loginID": "180892873"
+    },
+    "id6": {
+      "assigned": false,
+      "loginID": "180893752"
+    },
+    "id60": {
+      "assigned": false,
+      "loginID": "180892872"
+    },
+    "id61": {
+      "assigned": false,
+      "loginID": "180892871"
+    },
+    "id62": {
+      "assigned": false,
+      "loginID": "180892870"
+    },
+    "id63": {
+      "assigned": false,
+      "loginID": "180892869"
+    },
+    "id64": {
+      "assigned": false,
+      "loginID": "180892835"
+    },
+    "id65": {
+      "assigned": false,
+      "loginID": "180892834"
+    },
+    "id66": {
+      "assigned": false,
+      "loginID": "180892833"
+    },
+    "id67": {
+      "assigned": false,
+      "loginID": "180892832"
+    },
+    "id68": {
+      "assigned": false,
+      "loginID": "180892831"
+    },
+    "id69": {
+      "assigned": false,
+      "loginID": "180892774"
+    },
+    "id7": {
+      "assigned": false,
+      "loginID": "180893751"
+    },
+    "id70": {
+      "assigned": false,
+      "loginID": "180892773"
+    },
+    "id71": {
+      "assigned": false,
+      "loginID": "180892772"
+    },
+    "id72": {
+      "assigned": false,
+      "loginID": "180892771"
+    },
+    "id73": {
+      "assigned": false,
+      "loginID": "180892750"
+    },
+    "id74": {
+      "assigned": false,
+      "loginID": "180892748"
+    },
+    "id75": {
+      "assigned": false,
+      "loginID": "180892747"
+    },
+    "id76": {
+      "assigned": false,
+      "loginID": "180892746"
+    },
+    "id77": {
+      "assigned": false,
+      "loginID": "180892726"
+    },
+    "id78": {
+      "assigned": false,
+      "loginID": "180892703"
+    },
+    "id79": {
+      "assigned": false,
+      "loginID": "180892643"
+    },
+    "id8": {
+      "assigned": false,
+      "loginID": "180893750"
+    },
+    "id80": {
+      "assigned": false,
+      "loginID": "180892642"
+    },
+    "id81": {
+      "assigned": false,
+      "loginID": "180892641"
+    },
+    "id82": {
+      "assigned": false,
+      "loginID": "180892640"
+    },
+    "id83": {
+      "assigned": false,
+      "loginID": "180892639"
+    },
+    "id84": {
+      "assigned": false,
+      "loginID": "180892614"
+    },
+    "id85": {
+      "assigned": false,
+      "loginID": "180892599"
+    },
+    "id86": {
+      "assigned": false,
+      "loginID": "180892580"
+    },
+    "id87": {
+      "assigned": false,
+      "loginID": "180892569"
+    },
+    "id88": {
+      "assigned": false,
+      "loginID": "180892509"
+    },
+    "id89": {
+      "assigned": false,
+      "loginID": "180892508"
+    },
+    "id9": {
+      "assigned": false,
+      "loginID": "180893625"
+    },
+    "id90": {
+      "assigned": false,
+      "loginID": "180892507"
+    },
+    "id91": {
+      "assigned": false,
+      "loginID": "180892506"
+    },
+    "id92": {
+      "assigned": false,
+      "loginID": "180892478"
+    },
+    "id93": {
+      "assigned": false,
+      "loginID": "180892449"
+    },
+    "id94": {
+      "assigned": false,
+      "loginID": "180892448"
+    },
+    "id95": {
+      "assigned": false,
+      "loginID": "180892400"
+    },
+    "id96": {
+      "assigned": false,
+      "loginID": "180892366"
+    },
+    "id97": {
+      "assigned": false,
+      "loginID": "180892298"
+    },
+    "id98": {
+      "assigned": false,
+      "loginID": "180889561"
+    },
+    "id99": {
+      "assigned": false,
+      "loginID": "180889555"
+    }
+  },
+  "users": {
+    "3EwQeyibCMd1BTi5w91VOpEsJKP2": {
+      "birthdate": "2005-06-03",
+      "city": "Cape Town",
+      "country": "SA",
+      "email": "kulatetsholofetso@gmail.com",
+      "equity": 1000,
+      "gender": "Female",
+      "last_login": 1731376989746,
+      "loginID": "180889477",
+      "name": "Avuyile",
+      "phone": "0827883050",
+      "postal": "2754",
+      "status": "active",
+      "street": "3 Scott",
+      "surname": "Kulate"
+    },
+    "A20XO3AOMYfXRrvCeWwEzxB82v52": {
+      "birthdate": "1986-02-19",
+      "email": "mbmyeni.brian@gmail.com",
+      "equity": 1000,
+      "last_login": 1731355311200,
+      "loginID": "180893624",
+      "name": "Mandlenkosi Brian",
+      "phone": "0714217981",
+      "status": "active",
+      "surname": "Myeni"
+    },
+    "Sh7fxPJ9uxNpOFxW1jgzMwke4ME2": {
+      "birthdate": "2003-02-20",
+      "city": "Cape Town",
+      "country": "South Africa",
+      "email": "Nprevillage@gmail.com",
+      "equity": 1000,
+      "gender": "Male",
+      "last_login": 1731424712734,
+      "loginID": "180893623",
+      "name": "Ndhavuko Previllage",
+      "phone": "0633055291",
+      "postal": "7700",
+      "status": "active",
+      "street": "129 Main Road",
+      "surname": "Maluleke"
+    },
+    "Wf4O8RQWNheHvMqw746pBxHgRTm1": {
+      "birthdate": "2002-12-12",
+      "city": "Nelspruit",
+      "country": "South Africa",
+      "email": "mtmagagula4@gmail.com",
+      "equity": 1000,
+      "gender": "male",
+      "last_login": 1730334795380,
+      "loginID": "180893790",
+      "name": "Mbongeni",
+      "phone": "0762813621",
+      "postal": "1245",
+      "status": "active",
+      "street": "Sfunindlela",
+      "surname": "Magagula"
+    },
+    "XWYJpzoe3yYAMinp30vUs2HYEi72": {
+      "birthdate": "2002-11-14",
+      "email": "sibandaleeton7@gmail.com",
+      "last_login": 1731409734523,
+      "name": "Leeton",
+      "phone": "0786590493",
+      "surname": "Sibanda"
+    },
+    "qcgfS0juRVgKifpuVas5PZASwy22": {
+      "birthdate": "2002-08-23",
+      "email": "internosza1@gmail.com",
+      "last_login": 1731588241828,
+      "name": "Siphosethu",
+      "phone": "0636544677",
+      "surname": "Shekwa"
+    }
+  }
+}

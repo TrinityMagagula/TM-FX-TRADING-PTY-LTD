@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Area - TM FX TRADING (pty) Ltd</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+    
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>TM FX TRADING  <span class="small-text">(pty) Ltd</span></h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#competitions">Competitions</a></li>
+                    <li><a href="#mentorship">Mentorship</a></li>
+                    <li><a href="#signals">Signals</a></li>
+                    <li><a href="#strategy">Strategy</a></li>
+                    <li><a href="#traders-group">Traders Group</a></li>
+                    <li><a href="profile.html" id="user-name">My Profile</a></li>
+                    <li><a href="index.html" onclick="logout(event)">Logout</a></li>
+                </ul>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </nav>
+        </div>
+
+        <div class="ticker-strip">
+            <iframe src="https://www.tradingview-widget.com/embed-widget/ticker-tape/?locale=en#%7B%22symbols%22%3A%5B%7B%22proName%22%3A%22FOREXCOM%3ASPXUSD%22%2C%22title%22%3A%22S%26P%20500%22%7D%2C%7B%22proName%22%3A%22FOREXCOM%3ANSXUSD%22%2C%22title%22%3A%22US%20100%22%7D%2C%7B%22proName%22%3A%22FX_IDC%3AEURUSD%22%2C%22title%22%3A%22EUR%2FUSD%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3ABTCUSD%22%2C%22title%22%3A%22Bitcoin%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3AETHUSD%22%2C%22title%22%3A%22Ethereum%22%7D%5D%2C%22showSymbolLogo%22%3Atrue%2C%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22displayMode%22%3A%22adaptive%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A44%7D" 
+                    width="100%" 
+                    height="50" 
+                    frameborder="0" 
+                    allowtransparency="true" 
+                    scrolling="no">
+            </iframe>
+        </div>
+ 
+    </header>
+    
+
+        <script>
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+
+        function logout(event) {
+                event.preventDefault();
+                signOut(auth).then(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "index.html"; // Redirect to home page after alert
+                }).catch((error) => {
+                    console.error("Logout error:", error);
+                });
+            }
+
+            let inactivityTime = function () {
+                let timer;
+                window.onload = resetTimer;
+                window.onmousemove = resetTimer;
+                window.onkeypress = resetTimer;
+
+                function logoutUser() {
+                    // Call logout directly instead of showing an alert here
+                    signOut(auth).then(() => {
+                        alert("You have been logged out.");
+                        window.location.href = "index.html"; // Redirect after alert
+                    }).catch((error) => {
+                        console.error("Logout error:", error);
+                    });
+                }
+
+                function resetTimer() {
+                    clearTimeout(timer);
+                    timer = setTimeout(logoutUser, 600000); // Logout after 10 minutes of inactivity
+                }
+            };
+
+            inactivityTime();
+
+            function logout() {
+                alert("You have been logged out.");
+            }
+
+
+            let signedUp = false;
+
+            function signUpForCompetition() {
+                if (!signedUp) {
+                    alert("You have successfully signed up.");
+                    signedUp = true;
+                    document.getElementById("competition-button").innerText = "Already Signed Up";
+                }
+            }
+
+            function goToCompetitionPage() {
+                window.location.href = "joincompetition.html";
+            }
+
+            function resetSignUp() {
+                const now = new Date();
+                const day = now.getDay();
+                const hour = now.getHours();
+                const minute = now.getMinutes();
+                if (day === 0 && hour === 0 && minute === 1) {
+                    signedUp = false;
+                    document.getElementById("competition-button").innerText = "Sign Up for Competition";
+                }
+            }
+
+            setInterval(resetSignUp, 60000); // Check every minute
+        </script>
+
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+            import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+                authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+                projectId: "mt-trading-signup-and-log-in",
+                storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+                messagingSenderId: "101302422584",
+                appId: "1:101302422584:web:07d472b05e81a6930beacd"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+        </script>
+
+    <main>
+
+
+
+        <section id="competitions">
+            <h2 style="text-align: center;">Monthly Demo Trading Competition</h2>
+            <p style="text-align: center;">Think you have what it takes to grow a small account? Join our monthly trading competition and prove your skills to win real cash prizes!</p>
+            
+            <h3 style="margin-top: 2rem; text-align: center;">Competition Overview</h3>
+            <p style="margin-top: 1rem;">
+                Our trading competition runs monthly, starting on the 1st and ending on the last day of each month. Participants can join at any time throughout the month by paying an entry fee of <strong>R50</strong>.
+            </p>
+            <p>
+                Upon registration, each participant will receive a demo trading account with a starting balance of <strong>R1000</strong>. All trading must be done using this account on the Exness platform, and traders are free to trade any available instrument.
+            </p>
+            <p>
+                If a participant's account balance drops to <strong>R0</strong>, they will be disqualified and must re-enter the competition by paying the entry fee again.
+            </p>
+            <p>
+                A <strong>daily leaderboard</strong> will track and display the rankings based on account balances, allowing participants to monitor their progress and position in real time.
+            </p>
+            
+        
+            <h3 style="margin-top: 2rem; text-align: center;">How to Win</h3>
+            <ol style="margin-top: 1rem;">
+                <li>To be declared the winner, a participant must be ranked <strong>#1</strong> on the leaderboard at the end of the month <em>and</em> have grown their account to more than <strong>R3000</strong>.</li>
+                <li>Being #1 with less than R3000 disqualifies you from winning — both criteria must be met: top rank and minimum R3000 balance.</li>
+                <li>The winner will receive a <strong>cash prize of R500</strong>.</li>
+                <li>There are no restrictions on the instruments you can trade — you have full freedom to trade any pair or asset available on the platform.</li>
+                <li>All trading activity is monitored to ensure fair play and transparency.</li>
+            </ol>
+        
+            <h3 style="margin-top: 2rem; text-align: center;">Join the Challenge</h3>
+            <p style="text-align: center;">Whether you're a beginner or a pro, this is your chance to show your trading skills and walk away with real money. Ready to compete?</p>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="elegant-button" onclick="goToCompetitionPage()">JOIN NOW</button>
+            </div>
+        </section>
+        
+
+        <section></section>
+
+        <section id="mentorship">
+            <h2>Mentorship</h2>
+            <p>Our mentorship program is designed to support your journey to becoming a skilled and profitable forex trader. Through structured guidance, hands-on practice, and expert insights, we ensure you acquire the essential knowledge and skills needed for success in the forex market. Our mentorship includes:</p>
+        
+            <div>
+                <p style="margin-top: 1rem;"><strong>Foundational Forex Training:</strong></p>
+                    Build a strong foundation in forex trading with detailed lessons covering the basics, including key terms, trading platforms, and how to navigate the market with confidence.
+        
+                <p style="margin-top: 1rem;"><strong>Platform and Tools Mastery:</strong></p>
+                    Learn how to use essential forex trading apps and tools, including charting software, trading platforms, and mobile trading apps, ensuring you're well-equipped to analyze and execute trades.
+        
+                <p style="margin-top: 1rem;"><strong>Chart Analysis:</strong></p>
+                    Understand the art of chart reading, including candlestick patterns, trend lines, and support and resistance levels, empowering you to make informed predictions about price movements.
+        
+                <p style="margin-top: 1rem;"><strong>Technical Analysis:</strong></p>
+                    Delve into technical indicators, oscillators, and chart patterns that help you assess market trends and potential entry and exit points, allowing for strategic trade placements.
+        
+                <p style="margin-top: 1rem;"><strong>Market and Economic Analysis:</strong></p>
+                    Stay ahead of market trends with insights into economic indicators, news analysis, and the impact of global events on forex markets. Learn how to interpret and use economic data in your trading strategies.
+        
+                <p style="margin-top: 1rem;"><strong>Risk Management:</strong></p> 
+                    Master the principles of risk management, including position sizing, stop-loss strategies, and maintaining a balanced risk-reward ratio to protect your capital.
+        
+                <p style="margin-top: 1rem;"><strong>Emotional Control:</strong></p>
+                    Develop emotional resilience and discipline to handle market fluctuations with a clear mind, making well-calculated decisions without the influence of stress or impulsive reactions.
+        
+                <p style="margin-top: 1rem;"><strong>Customized Training:</strong></p>
+                    Receive tailored mentorship focusing on the areas and strategies you wish to specialize in, whether it's short-term trading, swing trading, or long-term investment strategies.
+            </div>
+            
+            <div style="margin-top: 1rem;">
+                <p><strong>Subscription Packages:</strong></p>
+            </div>
+
+            <div class="packages-container" style="margin-top: 1rem;">
+                
+                <div class="packages">
+                    <h3 style="margin-bottom: 1rem;">Weekly Subscription: <strong>$7 / R125</strong></h3>
+                    <a href="https://wa.me/p/8051304438303831/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                        <i class="fas fa-shopping-cart"></i> Buy Now
+                    </a>
+                </div>
+                
+                <div class="packages">
+                    <h3 style="margin-bottom: 1rem;">Monthly Subscription: <strong>$20 / R350</strong><h3>
+                    <a href="https://wa.me/p/8552964324811776/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                        <i class="fas fa-shopping-cart"></i> Buy Now
+                    </a> 
+                </div>
+                
+                <div class="packages">
+                    <h3 style="margin-bottom: 1rem;">Yearly Subscription: <strong>$200 / R3,600</strong></h3>
+                    <a href="https://wa.me/p/8476119322514929/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                        <i class="fas fa-shopping-cart"></i> Buy Now
+                    </a>
+                </div>
+            </div>
+        
+            <p style="margin-top: 1rem;">Join our mentorship program today and gain the skills, confidence, and insights needed to excel in the forex market. Together, we’ll turn your trading potential into trading profits.</p>
+        </section>
+        
+
+        <section></section>
+
+        <section id="signals">
+            <h2>Signals</h2>
+            <p style="margin-bottom: 2rem;">Access our premium signal services to boost your trading accuracy and profitability. Our signals are crafted by experienced analysts, providing you with high-quality, actionable trading insights in real-time. Choose from our top packages:</p>
+        
+            <h3>1. Deriv Signals</h3>
+            <p>Our Deriv signals are tailored for popular synthetic indices, such as Crash, Boom, Step, and Volatility indices. These signals are meticulously researched to give you a reliable edge in the market, no matter the trading conditions.</p>
+            <div style="margin-top: 1rem;">
+                
+                <div class="packages-container">
+                    
+                    <div class="packages">
+                        <h3>Weekly Signals: <strong>$10 / R170</strong> </h3>
+                        <p style="margin-bottom: 1rem;"> Perfect for short-term traders looking for consistent, high-frequency insights.</p>
+                        <a href="https://wa.me/p/8667119913323392/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                            <i class="fas fa-shopping-cart"></i> Buy Now
+                        </a>
+                    </div>
+                    
+                    <div class="packages">
+                        <h3>Monthly Signals: <strong>$30 / R500</strong></h3>
+                        <p style="margin-bottom: 1rem;">Ideal for dedicated traders who want continuous access to high-quality signals for strategic planning.</p>
+                        <a href="https://wa.me/p/9376938542333741/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                            <i class="fas fa-shopping-cart"></i> Buy Now
+                        </a>
+                    </div>
+            
+                </div>
+            </div>
+        
+            <h3 style="margin-top: 2rem;">2. Stock Index Signals</h3>
+            <p>Receive professional guidance on major stock indices such as the US100, US30, UK100, and GER40. These signals leverage technical and market analysis to help you seize opportunities in some of the most dynamic stock indices globally.</p>
+            <div style="margin-top: 1rem;">
+                
+                <div class="packages-container">
+                    <div class="packages">
+                        <h3>Weekly Signals: <span>$8 / R150</span> </h3>
+                        <p style="margin-bottom: 1rem;">Ideal for focused trading on specific indices, delivered with accuracy and timing.</p>
+                        <a href="https://wa.me/p/8841370619239323/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                            <i class="fas fa-shopping-cart"></i> Buy Now
+                        </a>
+                    </div>
+                    <div class="packages">
+                        <h3>Monthly Signals: <span>$25 / R450</span> </h3>
+                        <p style="margin-bottom: 1rem;">A comprehensive plan for traders looking to capitalize on trends and market movements over a longer period.</p>
+                        <a href="https://wa.me/p/9918071831542519/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                            <i class="fas fa-shopping-cart"></i> Buy Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        
+            <p style="margin-top: 2rem;">With our signals, you’ll gain access to:</p>
+            <div style="margin-top: 1rem;">
+                <div><strong>Timely Notifications:</strong> </div>
+                    <p>Immediate alerts on buy and sell opportunities, allowing you to act quickly on profitable trades.</p>
+                <div style="margin-top: 1rem;"><strong>Comprehensive Analysis:</strong> </div>
+                    <p>Each signal includes an analysis rationale, helping you understand the factors behind each recommendation.</p>
+                <div style="margin-top: 1rem;"><strong>Risk Management Guidance:</strong> </div>
+                    <p>Our signals come with stop-loss and take-profit levels to help you manage risk effectively.</p>
+            </div>
+        
+            <p style="margin-top: 2rem;">Join our signals service today to gain a professional edge and make smarter trading decisions with confidence. Stay ahead of the markets with insights you can trust.</p>
+        </section>
+        
+          
+
+        <section></section>  
+        
+        <section id="strategy">
+            <h2>TM FX TRADING Strategy</h2>
+            <p>Purchase the TM FX TRADING strategy, a highly effective system tested for both the forex and Deriv markets. Our strategy provides:</p>
+            
+            <div style="margin-top: 1rem;">
+                <p><strong>Comprehensive Analysis:</strong></p>
+                    Helps identify market trends and entry/exit points.
+                <p style="margin-top: 1rem;"><strong>High Success Rate:</strong> </p>
+                    Proven performance backed by extensive testing across markets.
+                <p style="margin-top: 1rem;"><strong>Compatibility:</strong> </p>
+                    Works seamlessly with both Forex and Deriv platforms.
+            </div>
+            <p style="margin-top: 1rem;">Empower your trading decisions with a reliable strategy designed for profitability and consistency.</p>
+
+            <div class="packages-container">
+                <div class="packages">
+                    <h3 style="margin-bottom: 1rem;">Price: <strong>$420 / R7,500</strong></h3>
+                    <a href="https://wa.me/p/8469698126412892/27682253532" target="_blank" style="color: black; text-decoration: none;">
+                        <i class="fas fa-shopping-cart"></i> Buy Now
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <section></section>
+
+        <section id="traders-group">
+            <h2>Traders Group</h2>
+            <p>Join our exclusive TM FX TRADING group and connect with like-minded individuals. The group offers:</p>
+            <div style="margin-top: 1rem;">
+                <p style="margin-top: 1rem;"><strong>Community Support:</strong></p>
+                    Collaborate, share insights, and support each other’s goals.
+                <p style="margin-top: 1rem;"><strong>Knowledge Sharing:</strong> </p>
+                    Learn from experienced traders and improve your skills.
+                <p style="margin-top: 1rem;"><strong>Regular Updates:</strong> </p>
+                    Stay informed with the latest trading tips and industry news.
+            </div>
+            <p style="margin-top: 1rem;">Empower yourself by joining a community that motivates you to grow and succeed in trading.</p>
+            
+            <div class="packages-container">
+                <div class="packages">
+                    <h3 style="margin-bottom: 1rem;">Join WhatsApp Group Now</h3>
+                    <a href="https://chat.whatsapp.com/Hna9qvbY0jmFJ0fzwrqxUj" target="_blank" style="color: white; background-color: #3a3d3a; padding: 10px 20px; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center;">
+                        <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> TM FX Traders
+                    </a>
+                </div>
+            </div>
+        
+        </section>
+        
+        <section></section>
+
+        
+
+        
+        
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+    </footer>
+
+    
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #a6a6a6;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+        }
+
+        .small-text {
+            font-size: 0.5em;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav li {
+            margin-top: 0.75rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .nav-links.active {
+            display: block;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        section {
+            padding: 2rem 0;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+            position: -ms-page;
+        }
+
+        .testimonial-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
+        .testimonial-gallery img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+        }
+
+        .elegant-button {
+            background-color: #3a3d3a; 
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .elegant-button:hover {
+            background-color: #5f5f5f;
+        }
+
+        
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 10px;
+                background: #333;
+                padding: 1rem;
+                width: 200px;
+                border-radius: 8px;
+            }
+
+            .menu-toggle {
+                display: block;
+                color: white;
+            }
+
+            .logo {
+                text-align: center;
+            }
+        }
+
+        .ticker-strip {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        #mentorship {
+            padding: 40px;
+            text-align: center;
+            background-color: #e4e4e4;
+        }
+
+        #signals {
+            padding: 40px;
+            text-align: center;
+            background-color: #e4e4e4;
+        }
+
+        #strategy {
+            padding: 40px;
+            text-align: center;
+            background-color: #e4e4e4;
+        }
+
+        #traders-group {
+            padding: 40px;
+            text-align: center;
+            background-color: #e4e4e4;
+        }
+
+        #competitions {
+            padding: 40px;
+            text-align: left;
+            background-color: #e4e4e4;
+            
+        }
+
+        .packages-container  {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .packages {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+        }
+
+        .chat-now-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3a3d3a; /* WhatsApp green color */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+        }
+
+        .chat-now-button i {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+
+        .chat-now-button:hover {
+            background-color: #525252; /* Darker shade on hover */
+        }
+
+
+    </style>
+    <a href="https://wa.me/27682253532" target="_blank" class="chat-now-button">
+        <i class="fab fa-whatsapp"></i> Chat Now
+    </a>
+    
+</body>
+</html>

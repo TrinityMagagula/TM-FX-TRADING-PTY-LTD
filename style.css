@@ -1,0 +1,169 @@
+
+/* body section */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #005f73;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    position: relative;
+}
+
+.menu-toggle {
+        display: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        text-align: right;
+    }
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Responsive navigation menu */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    nav ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    nav ul.show {
+        display: flex;
+    }
+}
+
+/* About Section */
+#about {
+    padding: 40px;
+    text-align: center;
+    background-color: #e4e4e4;
+}
+
+#about p {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Services Section */
+#services {
+    padding: 40px;
+    text-align: center;
+}
+
+.service-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.service {
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
+}
+
+.service h3 {
+    margin-top: 0;
+}
+
+/* Ticker strip styling */
+.ticker-strip {
+    padding: 10px 0;
+    background-color: #333; /* Dark background to match dark theme of TradingView widget */
+    text-align: center;
+}
+
+/* Weekly Competition section */
+#Weekly-Competition {
+    background-color: #005f73;
+    text-align: center;
+    color: white;
+    padding: 40px;
+}
+
+/* Contact Section */
+#contact {
+    padding: 40px;
+    background-color: #e4e4e4;
+    text-align: center;
+}
+
+#contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#contact-form label {
+    margin-top: 10px;
+}
+
+#contact-form input, #contact-form textarea {
+    padding: 10px;
+    margin-top: 5px;
+    width: 100%;
+}
+
+#contact-form button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    background-color: #005f73;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Footer */
+footer {
+    background-color: #005f73;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    bottom: 0;
+    width: 100%;
+}
