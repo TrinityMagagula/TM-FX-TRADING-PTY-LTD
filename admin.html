@@ -141,7 +141,7 @@
         const userTable = document.getElementById('userTable');
     
         // Admin UID
-        const adminUID = 'Wf4O8RQWNheHvMqw746pBxHgRTm1';
+        const adminUID = 'cYiq5Y3pBJaKsn10HK5l3ahAlAz1';
     
         // Check if the user is authenticated and is an admin
         onAuthStateChanged(auth, (user) => {
@@ -155,7 +155,7 @@
                 }
             } else {
                 alert("You must be logged in to access this page.");
-                window.location.href = 'index.html'; // Redirect to login page if not logged in
+                window.location.href = '/login'; // Redirect to login page if not logged in
             }
         });
     
@@ -401,6 +401,8 @@
         padding: 40px;
         text-align: left;
         background-color: #e4e4e4;
+        overflow-y: scroll;
+        max-height: 500px;
     }
 
     /* Leaderboard Styling */
@@ -410,6 +412,7 @@
         margin: 20px 0;
         font-size: 13px;
         text-align: left;
+        overflow-y: scroll;
     }
 
     th,
