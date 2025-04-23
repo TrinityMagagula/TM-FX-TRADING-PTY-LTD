@@ -109,6 +109,7 @@
     <div class="panel-item"><span>Balance:</span><span id="balance">Loading...</span></div>
     <div class="panel-item"><span>Equity:</span><span id="equity">Loading...</span></div>
     <div class="panel-item"><span>Margin:</span><span id="margin">0</span></div>
+    <div class="panel-item"><span>Free Margin:</span><span id="freemargin">0 ZAR</span></div>
     <div class="panel-item"><span>Open PnL:</span><span id="pnl">0.00</span></div>
     <div class="panel-item"><span>Current Price:</span><span id="price">0.00</span></div>
     <div class="panel-item">
@@ -293,19 +294,18 @@ function startAccountPanelRealtimeUpdates(uid) {
   const pnlRef = db.ref(`users/${uid}/webtrade/pnl`);
   const marginRef = db.ref(`users/${uid}/webtrade/margin`);
   const equityRef = db.ref(`users/${uid}/webtrade/equity`);
+  const freemarginRef = db.ref(`users/${uid}/webtrade/freemargin`);
   const openTradesRef = db.ref(`users/${uid}/open-trades`);
   const priceRef = db.ref('syntheticIndex/price');
 
   let currentPrice = 0;
   let openTrades = [];
 
-  // Realtime Balance
   balanceRef.on('value', snap => {
     const balance = parseFloat(snap.val() || 0);
     document.getElementById('balance').innerText = balance.toFixed(2) + ' ZAR';
   });
 
-  // Realtime PnL
   pnlRef.on('value', snap => {
     const pnl = parseFloat(snap.val() || 0);
     const pnlEl = document.getElementById('pnl');
@@ -313,35 +313,55 @@ function startAccountPanelRealtimeUpdates(uid) {
     pnlEl.style.color = pnl >= 0 ? 'green' : 'red';
   });
 
-  // Realtime Equity
   equityRef.on('value', snap => {
     const equity = parseFloat(snap.val() || 0);
     document.getElementById('equity').innerText = equity.toFixed(2) + ' ZAR';
+
+    // If equity <= 0, close all trades
+    if (equity <= 0) {
+      db.ref(`users/${uid}/open-trades`).once('value', snap => {
+        snap.forEach(tradeSnap => {
+          const tradeId = tradeSnap.key;
+          closeTrade(tradeId, 'Blown');
+        });
+      });
+    }
   });
 
-  // Realtime Margin
   marginRef.on('value', snap => {
     const margin = parseFloat(snap.val() || 0);
     document.getElementById('margin').innerText = margin.toFixed(2);
+
+    // Update Free Margin
+    equityRef.once('value').then(eqSnap => {
+      const equity = parseFloat(eqSnap.val() || 0);
+      const freeMargin = equity - margin;
+      freemarginRef.set(freeMargin);
+      document.getElementById('freemargin').innerText = freeMargin.toFixed(2) + ' ZAR';
+    });
   });
 
-  // Get all open trades once and update if changed
+  freemarginRef.on('value', snap => {
+    const freemargin = parseFloat(snap.val() || 0);
+    if (document.getElementById('freemargin')) {
+      document.getElementById('freemargin').innerText = freemargin.toFixed(2) + ' ZAR';
+    }
+  });
+
   openTradesRef.on('value', snap => {
     openTrades = [];
     snap.forEach(tradeSnap => {
       openTrades.push(tradeSnap.val());
     });
-    updateTradeStats(); // recalculate based on currentPrice
+    updateTradeStats();
   });
 
-  // Realtime Price
   priceRef.on('value', snap => {
     currentPrice = parseFloat(snap.val());
     document.getElementById('price').innerText = currentPrice.toFixed(2) + ' ZAR';
     updateTradeStats();
   });
 
-  // Calculate PnL, Margin, and Equity
   function updateTradeStats() {
     let totalPnL = 0;
     let totalMargin = 0;
@@ -356,23 +376,25 @@ function startAccountPanelRealtimeUpdates(uid) {
       else profit = (entry - currentPrice) * volume;
 
       totalPnL += profit;
-      totalMargin += volume;
+      totalMargin += volume * 100;
     });
 
     totalPnL = parseFloat(totalPnL.toFixed(2));
-    totalMargin = parseFloat((totalMargin * 100).toFixed(2)); // Margin = volume * 100
+    totalMargin = parseFloat(totalMargin.toFixed(2));
 
     pnlRef.set(totalPnL);
     marginRef.set(totalMargin);
 
-    // Equity = Balance + PnL
     balanceRef.once('value').then(balSnap => {
       const balance = parseFloat(balSnap.val() || 0);
       const equity = parseFloat((balance + totalPnL).toFixed(2));
       equityRef.set(equity);
+      const freeMargin = equity - totalMargin;
+      freemarginRef.set(freeMargin);
     });
   }
 }
+
 
 
 // ✅ Realtime Listener: Only update 'current' in DOM and auto-close on SL/TP
@@ -441,43 +463,89 @@ function startRealtimePriceListener() {
 }
 
 
-// ✅ Trade Execution Function
 function trade(type) {
-  const uid = currentUser.uid;
+  const uid = currentUser?.uid;
+  if (!uid) {
+    alert("User not logged in");
+    return;
+  }
+
   const lot = parseFloat(document.getElementById('lot').value);
   const sl = parseFloat(document.getElementById('sl').value);
   const tp = parseFloat(document.getElementById('tp').value);
 
-  db.ref('syntheticIndex/price/').once('value').then(snap => {
-    const price = snap.val();
+  if (isNaN(lot) || lot <= 0 || lot > 1) {
+    alert("Lot size must be between 0.01 and 1.00");
+    return;
+  }
 
-    const validBuy = type === 'buy' && (tp >= price || tp === 0) && (sl <= price || sl === 0) && (lot > 0 && lot < 1.01);
-    const validSell = type === 'sell' && (tp <= price || tp === 0) && (sl >= price || sl === 0) && (lot > 0 && lot < 1.01);
+  const contractSize = 100000;
+  const leverage = 100;
 
-    if (validBuy || validSell) {
-      const tradeData = {
-        symbol: 'TM FX Index',
-        time: new Date().toLocaleString(),
-        volume: lot * 100,
-        entry: price,
-        sl,
-        tp,
-        type,
-        current: price,
-        profit: 0
-      };
+  // Get the current price
+  db.ref('syntheticIndex/price/').once('value').then(priceSnap => {
+    const price = parseFloat(priceSnap.val());
 
-      db.ref(`users/${uid}/open-trades/${Date.now()}`).set(tradeData).then(() => {
-        loadOpenTrades(); // Initial UI rendering
-      });
-    } else {
-      alert("Invalid SL/TP for this trade type. min lot = 0.01, max lot = 1.00");
-    }
+    db.ref(`users/${uid}/webtrade`).once('value').then(userSnap => {
+      const userData = userSnap.val();
+      const freemargin = parseFloat(userData?.freemargin || 0);
+      const balance = parseFloat(userData?.balance || 0);
 
+      const marginRequired = (lot * contractSize) / leverage;
 
+      if (marginRequired > 0.9 * balance) {
+        alert("Not enough Margin, Check Lot Size");
+        return;
+      }
 
+      if (freemargin < 100) {
+        alert("Not Enough Free Margin");
+        return;
+      }
+
+      const validBuy =
+        type === 'buy' &&
+        (tp >= price || tp === 0) &&
+        (sl <= price || sl === 0);
+
+      const validSell =
+        type === 'sell' &&
+        (tp <= price || tp === 0) &&
+        (sl >= price || sl === 0);
+
+      if (validBuy || validSell) {
+        const tradeData = {
+          symbol: 'TM FX Index',
+          time: new Date().toLocaleString(),
+          volume: lot * 100,
+          entry: price,
+          sl,
+          tp,
+          type,
+          current: price,
+          profit: 0
+        };
+
+        const tradeId = Date.now();
+
+        const updates = {};
+        updates[`users/${uid}/open-trades/${tradeId}`] = tradeData;
+        updates[`users/${uid}/webtrade/freemargin`] = freemargin - 100;
+
+        db.ref().update(updates).then(() => {
+          loadOpenTrades(); // Update UI
+        }).catch(error => {
+          console.error("Trade error:", error);
+          alert("Failed to execute trade.");
+        });
+      } else {
+        alert("Invalid SL/TP for this trade type. Min lot = 0.01, Max lot = 1.00");
+      }
+    });
   });
 }
+
+
 
 // ✅ Load once on page load
 window.addEventListener('load', () => {
