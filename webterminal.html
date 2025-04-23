@@ -8,136 +8,98 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-  <script src="https://unpkg.com/lightweight-charts@3.6.0/dist/lightweight-charts.standalone.production.js"></script>
-  <style>
-    body {
-      background-color: #0c0f1a;
-      color: #f0f2f5;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-    }
-    header {
-      background: #111827;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #00ffcc;
-    }
-    .container {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .chart-container, .trade-panel {
-      background: #1e293b;
-      border-radius: 12px;
-      padding: 1rem;
-    }
-    .history {
-      background: #1e293b;
-      border-radius: 12px;
-      padding: 1rem;
-      overflow-y: scroll;
-      max-height: 300px;
-      max-width: 100%;
-    }
-    #chart {
-      width: 100%;
-      height: 500px;
-    }
-    .timeframe-selector {
-      margin-bottom: 0.5rem;
-    }
-    select {
-      padding: 0.5rem;
-      border-radius: 6px;
-      border: none;
-      background-color: #334155;
-      color: #00ffcc;
-    }
-    .trade-panel h2 {
-      font-size: 1.2rem;
-      color: #00ffcc;
-    }
-    .panel-item {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #334155;
-      padding: 0.5rem 0;
-    }
+  <link rel="stylesheet" href="webterminal.css">
+  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <script type="module" src="chart.js"></script>
+  <script type="module" src="webterminal.js"></script>
 
-    .tp1 {
-      width: 3rem;
-    }
-
-    .profile-section {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .profile-pic {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #334155;
-    }
-    .buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 1rem;
-    }
-    button {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .buy-btn { background: #00ffcc; color: #0c0f1a; }
-    .sell-btn { background: #ff4d4f; color: white; }
-    .close-btn { background: #64748b; color: white; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #334155;
-      padding: 0.5rem;
-      text-align: center;
-    }
-    .modify-btn {
-      background: #00ffcc;
-      color: #0c0f1a;
-      border: none;
-      padding: 0.25rem 0.5rem;
-      cursor: pointer;
-    }
-    .close-btn-small {
-      background: transparent;
-      color: #ff4d4f;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
 </head>
 <body>
-<header>TM FX TRADING PLATFORM</header>
+  <header>
+    <div class="containernav">
+        <div class="logo">
+            <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="competition.html">Competition</a></li>
+                <li><a href="index.html" onclick="logout(event)">Logout</a></li>
+            </ul>
+            <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        </nav>
+    </div>
+
+        <script>
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+        
+        function logout(event) {
+            event.preventDefault();
+            signOut(auth).then(() => {
+                alert("You have been logged out.");
+                window.location.href = "index.html"; // Redirect to home page after alert
+            }).catch((error) => {
+                console.error("Logout error:", error);
+            });
+        }
+
+        let inactivityTime = function () {
+            let timer;
+            window.onload = resetTimer;
+            window.onmousemove = resetTimer;
+            window.onkeypress = resetTimer;
+
+            function logoutUser() {
+                signOut(auth).then(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "index.html"; // Redirect after alert
+                }).catch((error) => {
+                    console.error("Logout error:", error);
+                });
+            }
+
+            function resetTimer() {
+                clearTimeout(timer);
+                timer = setTimeout(logoutUser, 600000); // Logout after 10 minutes of inactivity
+            }
+        };
+
+        inactivityTime();
+
+        function logout() {
+            alert("You have been logged out.");
+        }
+
+    </script>
+</header>
+
 <div class="container">
   <div class="chart-container">
-    <div class="timeframe-selector">
+    <div class="navbar">
+      <h1>TM FX Index</h1>
+      <a href="chart.html" style="color: aliceblue;">Full screen</a>
       <select id="timeframe">
-        <option value="1m">1 Minute</option>
-        <option value="5m">5 Minutes</option>
-        <option value="15m">15 Minutes</option>
-        <option value="1h">1 Hour</option>
+        <option value="1m">M1</option>
+        <option value="5m">M5</option>
+        <option value="15m">M15</option>
+        <option value="30m">M30</option>
+        <option value="1h">H1</option>
+        <option value="4h">H4</option>
+        <option value="1d">D1</option>
+        <option value="1w">W1</option>
+        <option value="1mn">MN</option>
       </select>
     </div>
-    <div id="chart"></div>
+  
+    <div id="chartContainer">
+      <div id="chart"></div>
+    </div>
   </div>
+
+
+
+
   <div class="trade-panel">
     <h2>Account Panel</h2>
     <div class="profile-section">
@@ -150,13 +112,13 @@
     <div class="panel-item"><span>Open PnL:</span><span id="pnl">0.00</span></div>
     <div class="panel-item"><span>Current Price:</span><span id="price">0.00</span></div>
     <div class="panel-item">
-      <span>Take Profit:</span><input type="number" id="tp" value="0.00" />
+      <span>Take Profit:</span><input class="panel-inputs" type="number" id="tp" value="0.00" />
     </div>
     <div class="panel-item">
-      <span>Stop Loss:</span><input type="number" id="sl" value="0.00" />
+      <span>Stop Loss:</span><input class="panel-inputs" type="number" id="sl" value="0.00" />
     </div>
     <div class="panel-item">
-      <span>Lot Size:</span><input type="number" id="lot" value="0.01" step="0.01" />
+      <span>Lot Size:</span><input class="panel-inputs" type="number" id="lot" value="0.01" step="0.01" />
     </div>
     <div class="buttons">
       <button class="buy-btn" onclick="trade('buy')">Buy</button>
@@ -165,31 +127,45 @@
     </div>
   </div>
 </div>
-<div class="container">
-  <div class="history">
+
+
+<div id="tradesContainer"  class="openTrades">
+  <div  style="position: absolute; margin-bottom: 5rem; text-align: center;">
     <h2>Open Trades</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Symbol</th>
-          <th>Time</th>
-          <th>Type</th>
-          <th>Volume</th>
-          <th>Entry</th>
-          <th>TP</th>
-          <th>SL</th>
-          <th>Current</th>
-          <th>P/L</th>
-          <th>Modify</th>
-          <th>Close</th>
-        </tr>
-      </thead>
-      <tbody id="openTrades"></tbody>
-    </table>
   </div>
 
-  <div class="history">
+    <div style="margin-top: 5rem; overflow-y: scroll; max-height: 200px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Time</th>
+            <th>Type</th>
+            <th>Volume</th>
+            <th>Entry</th>
+            <th>TP</th>
+            <th>SL</th>
+            <th>Current</th>
+            <th>P/L</th>
+            <th>Modify</th>
+            <th>Close</th>
+          </tr>
+        </thead>
+        <tbody id="openTrades"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="history" id="historyContainer">
+  <div  style="position: absolute; margin-bottom: 5rem; text-align: center;">
     <h2>Trade History</h2>
+  </div>
+
+
+  <div style="margin-top: 5rem; overflow-y: scroll; max-height: 200px;">
     <table>
       <thead>
         <tr>
@@ -198,7 +174,7 @@
           <th>Type</th>
           <th>Volume</th>
           <th>Entry</th>
-          <th>Current</th>
+          <th>Close</th>
           <th>TP</th>
           <th>SL</th>
           <th>P/L</th>
@@ -207,9 +183,11 @@
       </thead>
       <tbody id="tradeHistory"></tbody>
     </table>
-
-  </div>
+  </div>  
 </div>
+
+
+
 <script>
 // Firebase Init
 firebase.initializeApp({
@@ -245,9 +223,16 @@ function initUser(uid) {
     document.getElementById('userName').innerText = snap.val();
   });
 
-  storage.ref(`profile_pictures/${uid}`).getDownloadURL().then(url => {
-    document.getElementById('profilePic').src = url;
-  });
+  const defaultProfilePic = "https://firebasestorage.googleapis.com/v0/b/mt-trading-signup-and-log-in.appspot.com/o/tm%20fx.png?alt=media&token=4e6aded3-2796-4487-82d4-987b75ca18c1"; // Replace with your actual default pic URL
+  
+  storage.ref(`profile_pictures/${uid}`).getDownloadURL()
+    .then(url => {
+      document.getElementById('profilePic').src = url;
+    })
+    .catch(error => {
+      // If the profile picture doesn't exist or there's an error, use the default
+      document.getElementById('profilePic').src = defaultProfilePic;
+    });
 
   const balanceRef = db.ref(`users/${uid}/webtrade/balance/`);
   balanceRef.once('value').then(snap => {
@@ -673,4 +658,7 @@ function loadTradeHistory() {
 
 </script>
 </body>
+<footer>
+  <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+</footer>
 </html>
