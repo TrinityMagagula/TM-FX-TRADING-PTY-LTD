@@ -57,25 +57,7 @@ onAuthStateChanged(auth, async (user) => {
                         }
         
                         // Update the welcome message and display user details on the page
-                        document.getElementById('welcome-message').textContent = `Welcome to Competition, ${userData.name}`;
-        
-                        document.getElementById('user-details').innerHTML = `
-                            <p><strong>Name:</strong> ${userData.name}</p>
-                            <p><strong>Email:</strong> ${userData.email}</p>
-                            <p><strong>Account Type:</strong> ${userData.accountType || 'Standard'}</p>
-                            <p><strong>Login ID:</strong> ${userData.loginID || 'Pending assignment'}</p>
-                            <p><strong>Password: </strong>@TMFXCompetition1 </p>
-                            <p><strong>Platform:</strong> MT5</p>
-                            <p><strong>Broker:</strong> Exness Technologies Ltd</p>
-                            <p><strong>Server:</strong> Exness-MT5Trial9</p>
-                            <p><strong>Leverage:</strong> 1:1000</p>
-                        `;
-                    });
-                } else {
-                    // Redirect to homepage if not authenticated
-                    window.location.href = 'index.html';
-                }
-            });
+ 
 
 const emojiPicker = document.getElementById("emojiPicker");
 const replyToBox = document.getElementById("replyTo");
